@@ -4,15 +4,11 @@ import { useState, useEffect } from 'react';
 import { Quote } from '@/lib/quoteSelector';
 
 export default function QuoteView({ quote }: { quote: Quote }) {
-    const [isVisible, setIsVisible] = useState(false);
     const [message, setMessage] = useState('');
     const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
     const [dateTime, setDateTime] = useState<Date | null>(null);
 
     useEffect(() => {
-        // Trigger fade-in
-        const timer = setTimeout(() => setIsVisible(true), 100);
-
         // Set initial date/time on client (to avoid hydration mismatch)
         setDateTime(new Date());
 
@@ -22,7 +18,6 @@ export default function QuoteView({ quote }: { quote: Quote }) {
         }, 1000);
 
         return () => {
-            clearTimeout(timer);
             clearInterval(interval);
         };
     }, []);
@@ -51,7 +46,7 @@ export default function QuoteView({ quote }: { quote: Quote }) {
             } else {
                 setStatus('error');
             }
-        } catch (err) {
+        } catch {
             setStatus('error');
         }
     };
